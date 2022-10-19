@@ -43,11 +43,18 @@ const fetchMyIP = function(callback) {
     }
 
     // we have an IP address, return the object to the callback function
-    callback(null, ip);
+    callback(null, ip['ip']);
   });
 };
 
-
+/**
+ * Makes a single API request to retrieve the latitude & longitude from a user's IP address.
+ * Input:
+ *   - A callback (to pass back an error or the coordinates object)
+ * Returns (via Callback):
+ *   - An error, if any (nullable)
+ *   - The coordinates as an object (null if error). Example: { latitude: 45.501 longitude -73.567 }
+ */
 const fetchCoordsByIP = function(ip, callback) {
 
   const url = `https://ipwho.is/${ip}`;

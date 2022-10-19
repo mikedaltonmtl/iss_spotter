@@ -12,7 +12,7 @@ fetchMyIP((error, ip) => {
     return;
   }
 
-  console.log('It worked! Returned IP:' , ip['ip']);
+  console.log('It worked! Returned IP:' , ip);
 });
 */
 
