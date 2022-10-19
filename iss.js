@@ -47,4 +47,58 @@ const fetchMyIP = function(callback) {
   });
 };
 
-module.exports = { fetchMyIP };
+
+const fetchCoordsByIP = function(ip, callback) {
+
+  const url = `https://ipwho.is/${ip}`;
+
+  request(url, (error, response, body) => {
+
+    // return any errors to the callback function
+    if (error) {
+      const errorMessage = `A ${error.code} error occurred while trying to connect to the following api (${error.hostname}):\nThe details are as follows:\n${error}`;
+
+      callback(Error(errorMessage), null);
+      return;
+    }
+
+    // if non-200 status, assume server error
+    if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
+      callback(Error(msg), null);
+      return;
+    }
+
+    // deserialize body into a nodeJS object
+    const data = JSON.parse(body);
+
+    // check that some data has been returned
+    if (!data) {
+      // return error message to callback funtion then exit
+      const errorMessage = `The url (${url}) did not return any data, sorry.`;
+
+      callback(Error(errorMessage), null);
+      return;
+    }
+
+    // we have data returned, check the object to see if it was a success
+    if (!data['success']) {
+
+      callback(Error(`IP address ${ip} is invalid.`), null);
+      return;
+    }
+
+    // data returned successfully, return just the latitude & longitude fields
+    const object = {
+      latitude:   data.latitude,
+      longitude:  data.longitude,
+    };
+    callback(null, object);
+  });
+
+};
+
+module.exports = {
+  fetchMyIP,
+  fetchCoordsByIP,
+};
