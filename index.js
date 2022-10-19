@@ -1,6 +1,7 @@
 const {
   fetchMyIP,
   fetchCoordsByIP,
+  fetchISSFlyOverTimes,
 } = require('./iss');
 
 // callback function to test fetchMyIP function in iss.js
@@ -30,3 +31,15 @@ fetchCoordsByIP(ip, (error, data) => {
   console.log('It worked! Returned data:', data);
 });
 */
+const coordinates = { latitude: 45.5016889, longitude: -73.567256 };
+
+fetchISSFlyOverTimes(coordinates, (error, response) => {
+
+  if (error) {
+    console.log("It didn't work!" , error);
+    return;
+  }
+
+  console.log('It worked! Responses returned :', response);
+
+});
