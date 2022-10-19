@@ -115,19 +115,16 @@ const fetchCoordsByIP = function(ip, callback) {
  *   - The fly over times as an array of objects (null if error). Example:
  *     [ { risetime: 134564234, duration: 600 }, ... ]
  */
- const fetchISSFlyOverTimes = function(coords, callback) {
+const fetchISSFlyOverTimes = function(coords, callback) {
 
   const latitude = coords.latitude;
   const longitude = coords.longitude;
 
   const url = `https://iss-flyover.herokuapp.com/json/?lat=${latitude}&lon=${longitude}`;
 
-
-  // test with { latitude: 45.5016889, longitude: -73.567256 }
+  // address to test website directly using { latitude: 45.5016889, longitude: -73.567256 }
   // https://iss-flyover.herokuapp.com/json/?lat=45.5016889&lon=-73.567256
 
-
-  // we got this far ---------------------------------------- below is just copied from above!
   request(url, (error, response, body) => {
 
     // return any errors to the callback function
@@ -158,18 +155,14 @@ const fetchCoordsByIP = function(ip, callback) {
     }
 
     // we have data returned, check the object to see if it was a success
-    if (!data['success']) {
+    if (data['message'] !== 'success') {
 
-      callback(Error(`IP address ${ip} is invalid.`), null);
+      callback(Error(`Invalid request: latitude ${latitude}, longitude ${longitude}.`), null);
       return;
     }
 
-    // data returned successfully, return just the latitude & longitude fields
-    const object = {
-      latitude:   data.latitude,
-      longitude:  data.longitude,
-    };
-    callback(null, object);
+    // data returned successfully, return just the response array of flyovers
+    callback(null, data['response']);
   });
 
 };

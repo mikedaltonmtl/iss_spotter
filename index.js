@@ -27,7 +27,7 @@ fetchCoordsByIP(ip, (error, data) => {
     console.log("It didn't work!" , error);
     return;
   }
-
+  
   console.log('It worked! Returned data:', data);
 });
 */
@@ -41,5 +41,4 @@ fetchISSFlyOverTimes(coordinates, (error, response) => {
   }
 
   console.log('It worked! Responses returned :', response);
-
 });
